@@ -31,5 +31,23 @@ export const signup = async (req, res) => {
 // @route  POST /user/signin
 // @access Public
 export const signin = async (req, res) => {
-  res.json({ message: "Login user" });
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ message: "User does not exist" });
+
+    const passwordMatch = await user.matchPassword(password);
+    console.log(passwordMatch);
+    if (!passwordMatch)
+      return res.status(400).json({ message: "Invalid credentials" });
+
+    res.status(201).json({
+      _id: user.id,
+      name: user.name,
+      email: user.email,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Oops, something went wrong" });
+  }
 };
