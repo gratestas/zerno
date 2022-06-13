@@ -5,7 +5,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 
-import userRouter from "./routes/user.routes.js";
+import userRouter from "./routes/user.js";
 
 const PORT = process.env.PORT || 5000;
 
@@ -22,7 +22,7 @@ app.use("/user", userRouter);
 
 //  connect to DB
 mongoose
-  .connect(process.env.DB_CONECTION_URL, {
+  .connect(process.env.DB_CONNECTION_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
