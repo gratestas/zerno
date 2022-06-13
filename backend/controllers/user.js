@@ -1,3 +1,6 @@
+import jwt from "jsonwebtoken";
+import { config } from "dotenv";
+config();
 import User from "../models/user.js";
 
 // @desc   Register a new user
@@ -18,9 +21,10 @@ export const signup = async (req, res) => {
       password: password,
     });
     res.status(201).json({
-      _id: newUser.id,
+      id: newUser._id,
       name: newUser.name,
       email: newUser.email,
+      token: generateToken(newUser.email, newUser._id),
     });
   } catch (error) {
     res.status(500).json({ message: "Invalid user data" });
@@ -38,16 +42,22 @@ export const signin = async (req, res) => {
     if (!user) return res.status(404).json({ message: "User does not exist" });
 
     const passwordMatch = await user.matchPassword(password);
-    console.log(passwordMatch);
     if (!passwordMatch)
       return res.status(400).json({ message: "Invalid credentials" });
 
     res.status(201).json({
-      _id: user.id,
+      id: user._id,
       name: user.name,
       email: user.email,
+      token: generateToken(user.email, user._id),
     });
   } catch (error) {
     res.status(500).json({ message: "Oops, something went wrong" });
   }
+};
+
+const generateToken = (email, id) => {
+  return jwt.sign({ email, id }, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: "1h",
+  });
 };
