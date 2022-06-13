@@ -1,4 +1,12 @@
 {
+  "name": "zerno-backend",
+  "version": "1.0.0",
+  "author": "Stas Grate <stasgrate@gmail.com>",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.0",
