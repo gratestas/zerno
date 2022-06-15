@@ -1,10 +1,19 @@
 import express from "express";
 const router = express.Router();
 
-import { signin, signup } from "../controllers/user.js";
+import {
+  signin,
+  signup,
+  getUserProfile,
+  updateUserProfile,
+} from "../controllers/user.js";
+import { protect } from "../middleware/auth.js";
 
 router.post("/signin", signin);
 router.post("/signup", signup);
+router
+  .route("/profile")
+  .get(protect, getUserProfile)
+  .put(protect, updateUserProfile);
 
-//TODO:use auth middleware for other routes like products, customers..(if acess control is needed)
 export default router;
