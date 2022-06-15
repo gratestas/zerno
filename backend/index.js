@@ -19,6 +19,8 @@ app.use(cors());
 
 //Routes
 app.use("/user", userRouter);
+// enables to read all routes from /routes directory
+// fs.readdirSync("./routes").map((route) => app.user("/api", require("./routes" + route)))
 
 //  connect to DB
 mongoose
