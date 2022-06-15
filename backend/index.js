@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 
 //Routes
-app.use("/user", userRouter);
+app.use("/api/user", userRouter);
 // enables to read all routes from /routes directory
 // fs.readdirSync("./routes").map((route) => app.user("/api", require("./routes" + route)))
 
