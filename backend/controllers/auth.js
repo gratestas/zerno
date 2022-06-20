@@ -52,7 +52,7 @@ export const signin = async (req, res) => {
       sameSite: "None", // TODO: add secure:true in production
       maxAge: ONE_DAY_IN_MILLISEC,
     });
-    res.status(201).json({ accessToken });
+    res.status(201).json({ accessToken, isAdmin: foundUser.isAdmin });
   } catch (error) {
     res.status(500).json({ message: "Oops, something went wrong" });
   }
