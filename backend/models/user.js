@@ -27,10 +27,7 @@ const userSchema = mongoose.Schema(
       required: true,
       default: false,
     },
-    /* registeredAt: {
-    type: Date,
-    default: Date.now,
-  }, */
+    refreshToken: String,
   },
   {
     timestamps: true,
