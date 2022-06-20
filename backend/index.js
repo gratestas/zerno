@@ -3,9 +3,11 @@ config();
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
 
-import userRouter from "./routes/user.js";
+import authRouter from "./routes/auth.js";
+import refreshRouter from "./routes/refresh.js";
 
 const PORT = process.env.PORT || 5000;
 
@@ -13,12 +15,14 @@ const PORT = process.env.PORT || 5000;
 const app = express();
 
 // middleware
+app.use(cors());
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
-app.use(cors());
+app.use(cookieParser());
 
 //Routes
-app.use("/api/user", userRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/refresh", refreshRouter);
 // enables to read all routes from /routes directory
 // fs.readdirSync("./routes").map((route) => app.user("/api", require("./routes" + route)))
 
