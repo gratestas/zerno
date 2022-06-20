@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { useAuth } from "../context/AuthContext";
+
+import useAuth  from "../hooks/useAuth";
 
 import Input from "../components/input"
 import Button from "../components/button";
@@ -7,9 +8,10 @@ import Button from "../components/button";
 const initialState = { firstName: "", lastName: "", email: "", password: "" };
 
 const Auth = () => {
-  const [form, setForm] = useState(initialState);
-  const [isSignup, setIsSignup] = useState(true);
   const { signup, signin } = useAuth();
+
+  const [form, setForm] = useState(initialState);
+  const [isSignup, setIsSignup] = useState(false);
 
   const greeting = isSignup ? "Create an account" :" Welcome back";
   const cta = isSignup ? "Let's get started with your 30-days free trial!" :"Welcome back! Please enter your details";

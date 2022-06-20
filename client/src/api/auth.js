@@ -1,17 +1,17 @@
-import axios from "axios";
+import axios, { options } from "../api/axios";
 
-const baseUrl = "/api/user";
+const AUTH_URL = "/api/auth";
 
 export const signup = async (formData) => {
   console.log(formData);
-  const { data } = await axios.post(`${baseUrl}/signup`, formData);
+  const { data } = await axios.post(`${AUTH_URL}/signup`, formData, options);
 
   console.log("from signup api", data);
   return data; //data = { newUser, token}
 };
 
 export const signin = async (formData) => {
-  const { data } = await axios.post(`${baseUrl}/signin`, formData);
+  const { data } = await axios.post(`${AUTH_URL}/signin`, formData, options);
   console.log("from signin api", data);
   return data;
 };
