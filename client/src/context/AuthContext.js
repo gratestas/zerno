@@ -33,10 +33,9 @@ export const AuthProvider = ({ children }) => {
 
   const signin = async (formData) => {
     try {
-      const data = await api.signin(formData);
-      console.log("authcontext", data);
-      //setUser(data.user);
-      setToken(data.accessToken);
+      const { accessToken, isAdmin } = await api.signin(formData);
+      setUser({ isAdmin });
+      setToken(accessToken);
       navigate(origin, { replace: true });
     } catch (error) {
       console.log(error);
