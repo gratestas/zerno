@@ -8,14 +8,18 @@ import mongoose from "mongoose";
 
 import authRouter from "./routes/auth.js";
 import refreshRouter from "./routes/refresh.js";
+import credentials from "./middleware/credentials.js";
+import corsOptions from "./config/corsOptions.js";
 
 const PORT = process.env.PORT || 5000;
 
 // create an app
 const app = express();
 
+app.use(credentials);
+
 // middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cookieParser());
