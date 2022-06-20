@@ -1,7 +1,11 @@
+import { Link } from "react-router-dom"
 
 const AdminDashboard = () => {
   return (
-    <div>AdminDashboard</div>
+    <div>
+      <div>Admin Page</div>
+      <Link to='/account' >To Dashboard</Link>
+    </div>
   )
 }
 
