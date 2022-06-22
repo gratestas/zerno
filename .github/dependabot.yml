@@ -18,7 +18,7 @@ updates:
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
   - package-ecosystem: "npm" # See documentation for possible values
-    directory: "/frontend" # Location of package manifests
+    directory: "/client" # Location of package manifests
     target-branch: main
     schedule:
       interval: "daily"
