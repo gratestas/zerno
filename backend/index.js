@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
 
 import authRouter from "./routes/auth.js";
+import userRouter from "./routes/user.js";
 import refreshRouter from "./routes/refresh.js";
 import credentials from "./middleware/credentials.js";
 import corsOptions from "./config/corsOptions.js";
@@ -27,6 +28,7 @@ app.use(cookieParser());
 //Routes
 app.use("/api/auth", authRouter);
 app.use("/api/refresh", refreshRouter);
+app.use("/api/users", userRouter);
 // enables to read all routes from /routes directory
 // fs.readdirSync("./routes").map((route) => app.user("/api", require("./routes" + route)))
 
