@@ -19,7 +19,7 @@ const App = () => {
               <Route path="/account" element={<Dashboard />} />
             </Route>
 
-            <Route element={<RequireAdmin />}>
+            <Route element={<RequireAuth isAdmin />}>
               <Route path="/admin" element={<AdminDashboard />} />
             </Route>
           </Routes>
