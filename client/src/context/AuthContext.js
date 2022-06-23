@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }) => {
       console.log(error);
     }
   };
-
+  //TODO: consume signout api here
   const signout = () => {
     setUser(null);
     setToken(null);
@@ -51,6 +51,7 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         token,
+        setToken,
         user,
         setUser,
         signup,
