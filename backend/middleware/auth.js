@@ -12,7 +12,6 @@ export const protect = async (req, res, next) => {
     try {
       token = req.headers.authorization.split(" ")[1];
       const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-
       //get user from the token excluding password field
       req.user = await User.findById(decoded.id).select("-password");
       next();
