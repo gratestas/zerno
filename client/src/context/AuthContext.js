@@ -12,9 +12,6 @@ export const AuthProvider = ({ children }) => {
 
   const [token, setToken] = useState();
   const [user, setUser] = useState();
-  const [rememberMe, setRememberMe] = useState(
-    JSON.parse(localStorage.getItem("rememberMe")) || false
-  );
 
   const signup = async (formData) => {
     try {
@@ -56,8 +53,6 @@ export const AuthProvider = ({ children }) => {
         setToken,
         user,
         setUser,
-        rememberMe,
-        setRememberMe,
         signup,
         signin,
         signout,
