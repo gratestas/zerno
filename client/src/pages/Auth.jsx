@@ -73,7 +73,7 @@ const Auth = () => {
             size="md"
             text={isSignup ? "Sign up" : "Sing in"}
           />
-          <div>
+          <div className="flex space-x-2 mt-2">
             <input
               type="checkbox"
               id="rememberMe"
