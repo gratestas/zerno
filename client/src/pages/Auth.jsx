@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-import useAuth from "../hooks/useAuth";
+import { useAuth, useToggle } from "../hooks";
 
 import Input from "../components/input";
 import Button from "../components/button";
@@ -8,7 +8,8 @@ import Button from "../components/button";
 const initialState = { firstName: "", lastName: "", email: "", password: "" };
 
 const Auth = () => {
-  const { signup, signin, rememberMe, setRememberMe } = useAuth();
+  const { signup, signin } = useAuth();
+  const [check, toggleCheck] = useToggle("rememberMe", false);
 
   const [form, setForm] = useState(initialState);
   const [isSignup, setIsSignup] = useState(false);
@@ -26,10 +27,6 @@ const Auth = () => {
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
-
-  useEffect(() => {
-    localStorage.setItem("rememberMe", rememberMe);
-  }, [rememberMe]);
 
   return (
     <div className=" flex justify-center mt-20">
@@ -77,8 +74,8 @@ const Auth = () => {
             <input
               type="checkbox"
               id="rememberMe"
-              onChange={() => setRememberMe((prevState) => !prevState)}
-              checked={rememberMe}
+              onChange={toggleCheck}
+              checked={check}
             />
             <label htmlFor="rememberMe">Remember me</label>
           </div>
