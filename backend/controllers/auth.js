@@ -100,12 +100,12 @@ export const verifyRefreshToken = async (req, res) => {
 
 const generateAccessToken = (email, id) => {
   return jwt.sign({ email, id }, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: "30s",
+    expiresIn: "10s",
   });
 };
 
 const generateRefreshToken = (email, id) => {
   return jwt.sign({ email, id }, process.env.REFRESH_TOKEN_SECRET, {
-    expiresIn: "1d",
+    expiresIn: "15s",
   });
 };
