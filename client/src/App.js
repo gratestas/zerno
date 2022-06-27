@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Dashboard, Auth, AdminDashboard, Home, Unauthorized } from "./pages";
 import { AuthProvider } from "./context/AuthContext";
 import RequireAuth from "./routes/RequireAuth";
+import PersistentAuth from "./routes/PersistentAuth";
 
 const App = () => {
   return (
@@ -14,12 +15,15 @@ const App = () => {
             <Route path="/auth" element={<Auth />} />
             <Route path="/unauthorized" element={<Unauthorized />} />
 
-            <Route element={<RequireAuth />}>
-              <Route path="/account" element={<Dashboard />} />
-            </Route>
+            {/* PRIVATE ROUTES */}
+            <Route element={<PersistentAuth />}>
+              <Route element={<RequireAuth />}>
+                <Route path="/account" element={<Dashboard />} />
+              </Route>
 
-            <Route element={<RequireAuth isAdmin />}>
-              <Route path="/admin" element={<AdminDashboard />} />
+              <Route element={<RequireAuth isAdmin />}>
+                <Route path="/admin" element={<AdminDashboard />} />
+              </Route>
             </Route>
           </Routes>
         </main>
