@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Dashboard, Auth, AdminDashboard, Home, Unauthorized } from "./pages";
 import { AuthProvider } from "./context/AuthContext";
 import RequireAuth from "./routes/RequireAuth";
-import RequireAdmin from "./routes/RequireAdmin";
 
 const App = () => {
   return (
