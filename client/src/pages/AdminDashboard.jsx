@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 const AdminDashboard = () => {
   const [user, setUser] = useState();
+  const { signout } = useAuth();
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const location = useLocation();
@@ -35,7 +37,10 @@ const AdminDashboard = () => {
     <div>
       <div>Admin Page</div>
       <Link to="/account">To Dashboard</Link>
+      <br />
       <Link to="/">To Home</Link>
+      <br />
+      <button onClick={() => signout()}> sign out</button>
     </div>
   );
 };
