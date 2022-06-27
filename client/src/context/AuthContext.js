@@ -5,13 +5,6 @@ import * as api from "../api/auth";
 
 const AuthContext = createContext();
 
-const initialState = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  password: "",
-};
-
 export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -41,12 +34,18 @@ export const AuthProvider = ({ children }) => {
       console.log(error);
     }
   };
-  //TODO: consume signout api here
-  const signout = () => {
-    setUser(null);
-    setToken(null);
-    navigate("/auth");
+
+  const signout = async () => {
+    try {
+      await api.signout();
+      setUser(null);
+      setToken(null);
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
+
   return (
     <AuthContext.Provider
       value={{

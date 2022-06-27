@@ -15,3 +15,7 @@ export const signin = async (formData) => {
   console.log("from signin api", data);
   return data;
 };
+
+export const signout = async () => {
+  await axios.post(`${AUTH_URL}/signout`, options);
+};
