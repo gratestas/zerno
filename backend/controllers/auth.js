@@ -91,7 +91,7 @@ export const verifyRefreshToken = async (req, res) => {
     if (foundUser.id !== decoded.id) return res.sendStatus(403);
 
     const accessToken = generateAccessToken(foundUser.email, foundUser.id);
-    res.status(201).json({ accessToken });
+    res.status(201).json({ accessToken, isAdmin: foundUser.isAdmin });
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
