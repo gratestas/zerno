@@ -28,6 +28,7 @@ const userSchema = mongoose.Schema(
       default: false,
     },
     refreshToken: String,
+    activationToken: String,
   },
   {
     timestamps: true,
