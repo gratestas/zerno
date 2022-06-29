@@ -1,5 +1,8 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.js";
+import MailService from "../service/mail.js";
+import tokenService from "../service/token.js";
+import generateRandomBytes from "../utils/generateRandomBytes.js";
 
 const ONE_DAY_IN_MILLISEC = 24 * 60 * 60 * 1000;
 
@@ -8,7 +11,6 @@ const ONE_DAY_IN_MILLISEC = 24 * 60 * 60 * 1000;
 // @access Public
 export const signup = async (req, res) => {
   const { email, password, firstName, lastName } = req.body;
-  console.log(email, password, firstName, lastName);
   if (!firstName || !lastName || !email || !password)
     return res.status(400).json({ message: "Please fill in all fields" });
 
@@ -16,11 +18,18 @@ export const signup = async (req, res) => {
     const user = await User.findOne({ email }).exec();
     if (user) return res.status(409).json({ message: "User already exists" });
 
+    const verificationToken = generateRandomBytes(32);
+
     await User.create({
       name: `${firstName} ${lastName}`,
       email,
       password,
+      verificationToken,
     });
+
+    const verificationLink = `${process.env.API_URL}/api/auth/verify/${verificationToken}`;
+    await MailService.sendVerificationMail(email, verificationLink);
+
     res.status(201).json({ message: "User created successfully" });
   } catch (error) {
     res.status(500).json({ message: "Invalid user data" });
@@ -41,15 +50,21 @@ export const signin = async (req, res) => {
     const match = await foundUser.matchPassword(password);
     if (!match) return res.status(400).json({ message: "Invalid credentials" });
 
-    const accessToken = generateAccessToken(foundUser.email, foundUser._id);
-    const refreshToken = generateRefreshToken(foundUser.email, foundUser._id);
+    const accessToken = tokenService.generateAccessToken(
+      foundUser.email,
+      foundUser._id
+    );
+    const refreshToken = tokenService.generateRefreshToken(
+      foundUser.email,
+      foundUser._id
+    );
 
     foundUser.refreshToken = refreshToken;
     await foundUser.save();
 
     res.cookie("jwt", refreshToken, {
       httpOnly: true,
-      sameSite: "None", // TODO: add secure:true in production
+      sameSite: "None",
       secure: true,
       maxAge: ONE_DAY_IN_MILLISEC,
     });
@@ -66,14 +81,14 @@ export const signout = async (req, res) => {
 
   const foundUser = await User.findOne({ refreshToken }).exec();
   if (!foundUser) {
-    res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true }); // TODO: add secure: true in production
+    res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true });
     return res.sendStatus(204);
   }
 
   foundUser.refreshToken = "";
   await foundUser.save();
 
-  res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true }); // TODO: add secure: true in production
+  res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true });
   return res.sendStatus(204);
 };
 
@@ -90,7 +105,10 @@ export const verifyRefreshToken = async (req, res) => {
     const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
     if (foundUser.id !== decoded.id) return res.sendStatus(403);
 
-    const accessToken = generateAccessToken(foundUser.email, foundUser.id);
+    const accessToken = tokenService.generateAccessToken(
+      foundUser.email,
+      foundUser.id
+    );
     res.status(201).json({ accessToken, isAdmin: foundUser.isAdmin });
   } catch (error) {
     console.log(error);
@@ -98,14 +116,15 @@ export const verifyRefreshToken = async (req, res) => {
   }
 };
 
-const generateAccessToken = (email, id) => {
-  return jwt.sign({ email, id }, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: "10s",
-  });
-};
+export const verify = async (req, res) => {
+  const verificationToken = req.params.token;
+  try {
+    const user = await User.findOne({ verificationToken });
+    user.isConfirmed = true;
+    await user.save();
 
-const generateRefreshToken = (email, id) => {
-  return jwt.sign({ email, id }, process.env.REFRESH_TOKEN_SECRET, {
-    expiresIn: "15s",
-  });
+    return res.redirect("http://localhost:3000"); //TODO: update client url for production
+  } catch (error) {
+    console.log(error);
+  }
 };
