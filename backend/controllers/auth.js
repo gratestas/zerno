@@ -1,5 +1,7 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.js";
+import MailService from "../service/mail.js";
+import generateRandomBytes from "../utils/generateRandomBytes.js";
 
 const ONE_DAY_IN_MILLISEC = 24 * 60 * 60 * 1000;
 
@@ -16,11 +18,18 @@ export const signup = async (req, res) => {
     const user = await User.findOne({ email }).exec();
     if (user) return res.status(409).json({ message: "User already exists" });
 
+    const activationToken = generateRandomBytes(32);
+
     await User.create({
       name: `${firstName} ${lastName}`,
       email,
       password,
+      activationToken,
     });
+
+    const activationLink = `${process.env.API_URL}/api/activate/${activationToken}`;
+    await MailService.sendActivationMail(email, activationLink);
+
     res.status(201).json({ message: "User created successfully" });
   } catch (error) {
     res.status(500).json({ message: "Invalid user data" });
