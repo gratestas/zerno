@@ -28,7 +28,7 @@ const userSchema = mongoose.Schema(
       default: false,
     },
     refreshToken: String,
-    activationToken: String,
+    verificationToken: String,
   },
   {
     timestamps: true,
