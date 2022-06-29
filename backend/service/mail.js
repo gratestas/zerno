@@ -3,7 +3,7 @@ import { google } from "googleapis";
 import dotenv from "dotenv";
 dotenv.config();
 
-const sendActivationMail = async (to, link) => {
+const sendVerificationMail = async (to, link) => {
   try {
     const transport = await createTransport();
     const info = await transport.sendMail({
@@ -53,5 +53,5 @@ const createTransport = async () => {
   return transport;
 };
 
-const MailService = { sendActivationMail };
+const MailService = { sendVerificationMail };
 export default MailService;
