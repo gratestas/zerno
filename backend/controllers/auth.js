@@ -18,17 +18,17 @@ export const signup = async (req, res) => {
     const user = await User.findOne({ email }).exec();
     if (user) return res.status(409).json({ message: "User already exists" });
 
-    const activationToken = generateRandomBytes(32);
+    const verificationToken = generateRandomBytes(32);
 
     await User.create({
       name: `${firstName} ${lastName}`,
       email,
       password,
-      activationToken,
+      verificationToken,
     });
 
-    const activationLink = `${process.env.API_URL}/api/activate/${activationToken}`;
-    await MailService.sendActivationMail(email, activationLink);
+    const verificationLink = `${process.env.API_URL}/api/auth/verify/${verificationToken}`;
+    await MailService.sendVerificationMail(email, verificationLink);
 
     res.status(201).json({ message: "User created successfully" });
   } catch (error) {
@@ -104,6 +104,19 @@ export const verifyRefreshToken = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
+  }
+};
+
+export const verify = async (req, res) => {
+  const verificationToken = req.params.token;
+  try {
+    const user = await User.findOne({ verificationToken });
+    user.isConfirmed = true;
+    await user.save();
+
+    return res.redirect("http://localhost:3000");
+  } catch (error) {
+    console.log(error);
   }
 };
 
