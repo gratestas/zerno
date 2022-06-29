@@ -83,7 +83,7 @@ const Auth = () => {
             {isSignup ? "Already have an account?" : "Don't have an account?"}
             <span
               className="ml-2 text-bold text-gray-900 cursor-pointer"
-              onClick={() => setIsSignup(!prevState)}
+              onClick={() => setIsSignup((prevState) => !prevState)}
             >
               {!isSignup ? "Sign up" : "Sing in"}
             </span>
