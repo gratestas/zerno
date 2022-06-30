@@ -18,7 +18,7 @@ export const signup = async (req, res) => {
     const user = await User.findOne({ email }).exec();
     if (user) return res.status(409).json({ message: "User already exists" });
 
-    const verificationToken = generateRandomBytes(32);
+    const verificationToken = await generateRandomBytes(32);
 
     await User.create({
       name: `${firstName} ${lastName}`,
