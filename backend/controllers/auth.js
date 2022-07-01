@@ -128,3 +128,27 @@ export const verify = async (req, res) => {
     console.log(error);
   }
 };
+
+export const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+  console.log(req.body);
+  if (!email)
+    return res.status(400).json({ message: "Please provide a valid email!" });
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user)
+      return res
+        .status(400)
+        .json({ message: "User not found, invalid request!" });
+
+    const resetPasswordToken = await generateRandomBytes(32);
+    user.resetPasswordToken = resetPasswordToken;
+
+    const url = `${process.env.API_URL}/api/auth/reset-password/${user._id}/${resetPasswordToken}`;
+
+    MailService.sendPasswordResetMail(user.email, url);
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
