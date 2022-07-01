@@ -18,7 +18,7 @@ export const signup = async (req, res) => {
     const user = await User.findOne({ email }).exec();
     if (user) return res.status(409).json({ message: "User already exists" });
 
-    const verificationToken = generateRandomBytes(32);
+    const verificationToken = await generateRandomBytes(32);
 
     await User.create({
       name: `${firstName} ${lastName}`,
@@ -94,7 +94,6 @@ export const signout = async (req, res) => {
 
 export const verifyRefreshToken = async (req, res) => {
   const cookies = req.cookies;
-  console.log(cookies.jwt);
   if (!cookies?.jwt) return res.status(401);
   const refreshToken = cookies.jwt;
 
@@ -126,5 +125,53 @@ export const verify = async (req, res) => {
     return res.redirect("http://localhost:3000"); //TODO: update client url for production
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+  if (!email)
+    return res.status(400).json({ message: "Please provide a valid email!" });
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user)
+      return res
+        .status(400)
+        .json({ message: "User not found, invalid request!" });
+
+    const resetPasswordToken = await generateRandomBytes(32);
+    user.resetPasswordToken = resetPasswordToken;
+    user.save();
+    const url = `${process.env.API_URL}/api/auth/reset-password/${user._id}/${resetPasswordToken}`;
+
+    MailService.sendPasswordResetMail(user.email, url);
+    res.status(200).json("Password reset link is sent to your email");
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const resetPassword = async (req, res) => {
+  const { userId } = req;
+  const { password } = req.body;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) return res.status(400).json({ message: "User not found" });
+    const isSamePassword = await user.matchPassword(password);
+    if (isSamePassword)
+      return res.status(409).json({
+        message: "New password must be different",
+      });
+    user.password = password;
+    user.resetPasswordToken = undefined;
+    user.save();
+
+    return res
+      .status(200)
+      .json({ message: "Password has been updated successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };

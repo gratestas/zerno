@@ -3,7 +3,12 @@ import { google } from "googleapis";
 import dotenv from "dotenv";
 dotenv.config();
 
-const sendVerificationMail = async (to, link) => {
+import {
+  mailVerificationTemplate,
+  passwordResetTemplate,
+} from "../utils/mailTemplates.js";
+
+const sendVerificationMail = async (to, url) => {
   try {
     const transport = await createTransport();
     const info = await transport.sendMail({
@@ -11,12 +16,23 @@ const sendVerificationMail = async (to, link) => {
       to,
       subject: "Hesabınızı aktifleştirin. " + process.env.CLIENT_URL,
       text: "",
-      html: `
-                <div>
-                    <h1>Hesabınızı aktifleştirmek için aşağıdaki linke tıklayın</h1>
-                    <a href="${link}">${link}</a>
-                </div>
-                `,
+      html: mailVerificationTemplate(url),
+    });
+    console.log(`Message sent to ${info.messageId}`);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const sendPasswordResetMail = async (to, url) => {
+  try {
+    const transport = await createTransport();
+    const info = await transport.sendMail({
+      from: ` Zerno Fırın <${process.env.SMTP_USER}>`,
+      to,
+      subject: "Sifrenizi degistirin",
+      text: "",
+      html: passwordResetTemplate(url),
     });
     console.log(`Message sent to ${info.messageId}`);
   } catch (error) {
@@ -53,5 +69,5 @@ const createTransport = async () => {
   return transport;
 };
 
-const MailService = { sendVerificationMail };
+const MailService = { sendVerificationMail, sendPasswordResetMail };
 export default MailService;
