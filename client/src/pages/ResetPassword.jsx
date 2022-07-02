@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import { resetPassword } from "../api/auth";
 
@@ -7,9 +7,12 @@ import Button from "../components/button";
 import Input from "../components/input";
 
 const ResetPassword = () => {
-  const [password, setPassword] = useState();
   const { id, token } = useParams();
+  const navigate = useNavigate();
+
+  const [password, setPassword] = useState();
   const [sent, setSent] = useState(false);
+
   const handleChange = (e) => {
     e.preventDefault();
     setPassword(e.target.value);
@@ -18,6 +21,7 @@ const ResetPassword = () => {
   const handleClick = async () => {
     await resetPassword(password, id, token);
     setSent(true);
+    navigate("/auth", { replace: true });
   };
   return (
     <>
