@@ -30,7 +30,7 @@ const Auth = () => {
   };
 
   return (
-    <div className=" flex justify-center mt-20">
+    <div className=" flex justify-center">
       <div>
         <form
           className="w-[25rem] xl:w-[30rem] h-[30rem] rounded-2xl  px-4 "
