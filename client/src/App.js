@@ -7,6 +7,7 @@ import {
   Home,
   ForgotPassword,
   Unauthorized,
+  ResetPassword,
 } from "./pages";
 import { AuthProvider } from "./context/AuthContext";
 import RequireAuth from "./routes/RequireAuth";
@@ -16,11 +17,15 @@ const App = () => {
   return (
     <Router>
       <AuthProvider>
-        <main className="flex flex-col justify-center items-center h-screen">
+        <main className="flex flex-col md:justify-center items-center h-screen">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route
+              path="/reset-password/:id/:token"
+              element={<ResetPassword />}
+            />
             <Route path="/unauthorized" element={<Unauthorized />} />
 
             {/* PRIVATE ROUTES */}
