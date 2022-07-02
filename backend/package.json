@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "author": "Stas Grate <stasgrate@gmail.com>",
   "main": "index.js",
-  "engine": {
-    "node": "v16.x"
+  "engines": {
+    "node": "v16.x",
+    "yarn": "1.22.18"
   },
   "type": "module",
   "scripts": {
