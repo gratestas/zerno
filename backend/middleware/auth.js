@@ -1,7 +1,6 @@
 import { config } from "dotenv";
 config();
 import jwt from "jsonwebtoken";
-import mongoose from "mongoose";
 import User from "../models/user.js";
 
 export const protect = async (req, res, next) => {
@@ -37,7 +36,6 @@ export const validateResetPasswordToken = async (req, res, next) => {
     return res.status(400).json({ message: "Invalid request" });
 
   const user = await User.findById(id);
-  console.log(user);
   if (!user) return res.status(404).json({ message: "User not found" });
   if (user.resetPasswordToken !== token)
     return res.status(400).json({ message: "Password reset token is invalid" });
