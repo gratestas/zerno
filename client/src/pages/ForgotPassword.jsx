@@ -25,7 +25,7 @@ const ForgotPassword = () => {
           <p>
             We will send you a link to your email address to reset your password
           </p>
-          <Input name="Email" label="Email" onChange={handleChange} />
+          <Input name="email" label="Email" onChange={handleChange} />
           <div onClick={handleClick}>
             <Button
               type="submit"
