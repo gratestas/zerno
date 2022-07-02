@@ -4,6 +4,7 @@ import { useAuth, useToggle } from "../hooks";
 
 import Input from "../components/input";
 import Button from "../components/button";
+import { Link } from "react-router-dom";
 
 const initialState = { firstName: "", lastName: "", email: "", password: "" };
 
@@ -29,7 +30,7 @@ const Auth = () => {
   };
 
   return (
-    <div className=" flex justify-center mt-20">
+    <div className=" flex justify-center">
       <div>
         <form
           className="w-[25rem] xl:w-[30rem] h-[30rem] rounded-2xl  px-4 "
@@ -60,7 +61,7 @@ const Auth = () => {
             <Input name="password" label="Password" onChange={handleChange} />
           </div>
           <div className="flex justify-end mt-3 mb-6 text-sm font-semibold cursor-pointer">
-            Forgot password?
+            <Link to="/forgot-password">Forgot password?</Link>
           </div>
           <Button
             type="submit"

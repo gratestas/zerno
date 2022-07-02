@@ -120,6 +120,7 @@ export const verify = async (req, res) => {
   try {
     const user = await User.findOne({ verificationToken });
     user.isConfirmed = true;
+    user.verificationToken = undefined;
     await user.save();
 
     return res.redirect("http://localhost:3000"); //TODO: update client url for production
@@ -143,7 +144,7 @@ export const forgotPassword = async (req, res) => {
     const resetPasswordToken = await generateRandomBytes(32);
     user.resetPasswordToken = resetPasswordToken;
     user.save();
-    const url = `${process.env.API_URL}/api/auth/reset-password/${user._id}/${resetPasswordToken}`;
+    const url = `${process.env.CLIENT_URL}/reset-password/${user._id}/${resetPasswordToken}`;
 
     MailService.sendPasswordResetMail(user.email, url);
     res.status(200).json("Password reset link is sent to your email");

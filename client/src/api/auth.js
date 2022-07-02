@@ -19,3 +19,15 @@ export const signin = async (formData) => {
 export const signout = async () => {
   await axios.post(`${AUTH_URL}/signout`, options);
 };
+
+export const forgotPassword = async (email) => {
+  await axios.post(`${AUTH_URL}/forgot-password`, { email: email }, options);
+};
+
+export const resetPassword = async (password, id, token) => {
+  await axios.post(
+    `${AUTH_URL}/reset-password/${id}/${token}`,
+    { password },
+    options
+  );
+};

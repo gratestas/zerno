@@ -2,13 +2,13 @@ import jwt from "jsonwebtoken";
 
 const generateAccessToken = (email, id) => {
   return jwt.sign({ email, id }, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: "10s",
+    expiresIn: "15m",
   });
 };
 
 const generateRefreshToken = (email, id) => {
   return jwt.sign({ email, id }, process.env.REFRESH_TOKEN_SECRET, {
-    expiresIn: "15s",
+    expiresIn: "1h",
   });
 };
 
