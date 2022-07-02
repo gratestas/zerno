@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cookieParser());
 
 //Routes
-app.get('/', (req, res) => { res.send('Hello from Express!')
+app.get('/greetings', (req, res) => { res.send('Hello from Express!')
 app.use("/api/auth", authRouter);
 app.use("/api/refresh", refreshRouter);
 app.use("/api/users", userRouter);
