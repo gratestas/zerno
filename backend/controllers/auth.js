@@ -120,6 +120,7 @@ export const verify = async (req, res) => {
   try {
     const user = await User.findOne({ verificationToken });
     user.isConfirmed = true;
+    user.verificationToken = undefined;
     await user.save();
 
     return res.redirect("http://localhost:3000"); //TODO: update client url for production
