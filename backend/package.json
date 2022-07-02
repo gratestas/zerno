@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "author": "Stas Grate <stasgrate@gmail.com>",
   "main": "index.js",
+  "engine": {
+    "node": "v16.x"
+  },
   "type": "module",
   "scripts": {
     "dev": "nodemon index.js"
