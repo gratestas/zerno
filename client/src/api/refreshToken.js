@@ -1,6 +1,6 @@
 import axios, { options } from "../api/axios";
 
-const REFRESH_URL = "/refresh";
+const REFRESH_URL = "api/refresh";
 
 export const refreshToken = async () => {
   const { data } = await axios.get(REFRESH_URL, {
