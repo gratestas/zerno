@@ -12,9 +12,7 @@ export const signup = async (formData) => {
 
 export const signin = async (formData) => {
   console.log("signin api: got here");
-  console.log(axios.baseURL);
   const { data } = await axios.post(`${AUTH_URL}/signin`, formData, options);
-  console.log("from signin api", data);
   return data;
 };
 
