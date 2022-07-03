@@ -1,6 +1,6 @@
 import axios, { options } from "../api/axios";
 
-const AUTH_URL = "/api/auth";
+const AUTH_URL = "/auth";
 
 export const signup = async (formData) => {
   console.log(formData);
