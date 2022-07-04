@@ -1,4 +1,4 @@
-name: PR - Build Client
+name: PR - Build App
 
 on:
   push:
