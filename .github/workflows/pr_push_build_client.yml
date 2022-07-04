@@ -1,4 +1,4 @@
-name: PR - Buld App
+name: PR - Build Client
 
 on:
   push:
@@ -16,13 +16,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Build App
+      - name: Build App with Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Install dependencies
-        run: yarn
-      - name: Run build
-        run: yarn build
-      - name: Run test
-        run: yarn test --if-present
+      - name: Install dependencies and build
+        run: |
+          yarn
+          yarn build --if-present
+        working-directory: /client
