@@ -23,5 +23,5 @@ jobs:
       - name: Install dependencies and build
         run: |
           yarn set version 1.22.18
-          yarn build --if-present
+          yarn start
         working-directory: backend
