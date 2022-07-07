@@ -9,6 +9,7 @@ permissions:
 jobs:
   dependabot:
     runs-on: ubuntu-latest
+    if: ${{ github.actor == 'dependabot[bot]' }}
     steps:
       - name: Checkout source code
         uses: actions/checkout@v2
@@ -26,7 +27,7 @@ jobs:
           PR_URL: ${{ github.event.pull_request.hmtl_url }}
 
       - name: Enable auto-merge for Dependabot PRs
-        run: gh pr merge --auto --squash "$PR_URL"
+        run: gh pr merge --auto --merge "$PR_URL"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_URL: ${{ github.event.pull_request.html_url }}
